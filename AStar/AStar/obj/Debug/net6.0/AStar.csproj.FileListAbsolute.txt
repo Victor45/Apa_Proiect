@@ -1,0 +1,14 @@
+C:\Users\user\Desktop\Apa Project\AStar\AStar\bin\Debug\net6.0\AStar.exe
+C:\Users\user\Desktop\Apa Project\AStar\AStar\bin\Debug\net6.0\AStar.deps.json
+C:\Users\user\Desktop\Apa Project\AStar\AStar\bin\Debug\net6.0\AStar.runtimeconfig.json
+C:\Users\user\Desktop\Apa Project\AStar\AStar\bin\Debug\net6.0\AStar.dll
+C:\Users\user\Desktop\Apa Project\AStar\AStar\bin\Debug\net6.0\AStar.pdb
+C:\Users\user\Desktop\Apa Project\AStar\AStar\obj\Debug\net6.0\AStar.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\user\Desktop\Apa Project\AStar\AStar\obj\Debug\net6.0\AStar.AssemblyInfoInputs.cache
+C:\Users\user\Desktop\Apa Project\AStar\AStar\obj\Debug\net6.0\AStar.AssemblyInfo.cs
+C:\Users\user\Desktop\Apa Project\AStar\AStar\obj\Debug\net6.0\AStar.csproj.CoreCompileInputs.cache
+C:\Users\user\Desktop\Apa Project\AStar\AStar\obj\Debug\net6.0\AStar.dll
+C:\Users\user\Desktop\Apa Project\AStar\AStar\obj\Debug\net6.0\refint\AStar.dll
+C:\Users\user\Desktop\Apa Project\AStar\AStar\obj\Debug\net6.0\AStar.pdb
+C:\Users\user\Desktop\Apa Project\AStar\AStar\obj\Debug\net6.0\AStar.genruntimeconfig.cache
+C:\Users\user\Desktop\Apa Project\AStar\AStar\obj\Debug\net6.0\ref\AStar.dll

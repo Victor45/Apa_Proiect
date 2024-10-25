@@ -1,0 +1,9 @@
+C:\Users\user\Desktop\Apa Project\Apa_Project\Apa_Project\bin\Debug\Apa_Project.exe.config
+C:\Users\user\Desktop\Apa Project\Apa_Project\Apa_Project\bin\Debug\Apa_Project.exe
+C:\Users\user\Desktop\Apa Project\Apa_Project\Apa_Project\bin\Debug\Apa_Project.pdb
+C:\Users\user\Desktop\Apa Project\Apa_Project\Apa_Project\obj\Debug\Apa_Project.csproj.AssemblyReference.cache
+C:\Users\user\Desktop\Apa Project\Apa_Project\Apa_Project\obj\Debug\Apa_Project.Properties.Resources.resources
+C:\Users\user\Desktop\Apa Project\Apa_Project\Apa_Project\obj\Debug\Apa_Project.csproj.GenerateResource.cache
+C:\Users\user\Desktop\Apa Project\Apa_Project\Apa_Project\obj\Debug\Apa_Project.csproj.CoreCompileInputs.cache
+C:\Users\user\Desktop\Apa Project\Apa_Project\Apa_Project\obj\Debug\Apa_Project.exe
+C:\Users\user\Desktop\Apa Project\Apa_Project\Apa_Project\obj\Debug\Apa_Project.pdb
