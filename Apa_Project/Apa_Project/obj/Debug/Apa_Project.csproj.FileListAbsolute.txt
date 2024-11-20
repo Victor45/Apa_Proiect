@@ -7,3 +7,4 @@ C:\Users\user\Desktop\Apa Project\Apa_Project\Apa_Project\obj\Debug\Apa_Project.
 C:\Users\user\Desktop\Apa Project\Apa_Project\Apa_Project\obj\Debug\Apa_Project.csproj.CoreCompileInputs.cache
 C:\Users\user\Desktop\Apa Project\Apa_Project\Apa_Project\obj\Debug\Apa_Project.exe
 C:\Users\user\Desktop\Apa Project\Apa_Project\Apa_Project\obj\Debug\Apa_Project.pdb
+C:\Users\user\Desktop\Apa Project\Apa_Project\Apa_Project\obj\Debug\Apa_Project.Form1.resources

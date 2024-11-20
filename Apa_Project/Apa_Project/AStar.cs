@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,17 +20,14 @@ namespace Apa_Project
             }
         }
 
-        public struct FinPair
-        {
-            public int i, j;
-            public FinPair(int x, int y)
-            {
-                i = x;
-                j = y;
-            }
-        }
+        public static List<Pair> Final = new List<Pair>();
+        public static List<Pair> AStVisited = new List<Pair>();
+        public static Stopwatch Aststopwatch = new Stopwatch();
+        public static double AStdistance; 
 
-        public static List<FinPair> Final = new List<FinPair>();
+
+        //static int[] rowNum = { -1, 0, 0, 1 };
+        //static int[] colNum = { 0, -1, 1, 0 };
         public struct Cell
         {
             public int parent_i, parent_j;
@@ -38,6 +36,10 @@ namespace Apa_Project
         }
         public static void A_Star(int[,] grid, Pair src, Pair dest)
         {
+            //Aststopwatch.Reset();
+            Aststopwatch.Start();
+            Final.Clear();
+            AStVisited.Clear(); 
             int ROW = grid.GetLength(0);
             int COL = grid.GetLength(1);
 
@@ -82,8 +84,20 @@ namespace Apa_Project
             cellDetails[x, y].parent_i = x;
             cellDetails[x, y].parent_j = y;
 
-            SortedSet<(double, Pair)> openList = new SortedSet<(double, Pair)>(
-                Comparer<(double, Pair)>.Create((a, b) => a.Item1.CompareTo(b.Item1)));
+            //SortedSet<(double, Pair)> openList = new SortedSet<(double, Pair)>(
+            //    Comparer<(double, Pair)>.Create((a, b) =>
+            //    {
+            //        int result = a.Item1.CompareTo(b.Item1);
+            //        if (result == 0)
+            //        {
+            //            result = a.Item2.first.CompareTo(b.Item2.first);
+            //            if (result == 0)
+            //                result = a.Item2.second.CompareTo(b.Item2.second);
+            //        }
+            //        return result;
+            //    }));
+
+            SortedSet<(double, Pair)> openList = new SortedSet<(double, Pair)>(Comparer<(double, Pair)>.Create((a, b) => a.Item1.CompareTo(b.Item1)));
 
             openList.Add((0.0, new Pair(x, y)));
 
@@ -96,7 +110,11 @@ namespace Apa_Project
 
                 x = p.pair.first;
                 y = p.pair.second;
+                Pair visited;
+                visited.first = x;
+                visited.second = y;
                 closedList[x, y] = true;
+                AStVisited.Add(visited);
 
                 for (int i = -1; i <= 1; i++)
                 {
@@ -105,6 +123,11 @@ namespace Apa_Project
                         if (i == 0 && j == 0)
                             continue;
 
+                        //if (Math.Abs(i) == Math.Abs(j))
+                        //    continue;
+
+                        //int newX = x + rowNum[i];
+                        //int newY = y + colNum[i];
                         int newX = x + i;
                         int newY = y + j;
 
@@ -115,10 +138,11 @@ namespace Apa_Project
                             {
                                 cellDetails[newX, newY].parent_i = x;
                                 cellDetails[newX, newY].parent_j = y;
-                                Console.WriteLine("The destination cell is found");
+                                AStdistance = cellDetails[x, y].g + 1.0;
                                 TracePath(cellDetails, dest);
                                 foundDest = true;
-                                return;
+                                Aststopwatch.Stop();
+                            return;
                             }
 
                             if (!closedList[newX, newY] && IsUnBlocked(grid, newX, newY))
@@ -127,7 +151,7 @@ namespace Apa_Project
                                 double hNew = CalculateHValue(newX, newY, dest);
                                 double fNew = gNew + hNew;
 
-                                if (cellDetails[newX, newY].f == double.MaxValue || cellDetails[newX, newY].f > fNew)
+                                if (cellDetails[newX, newY].f == double.MaxValue || cellDetails[newX, newY].f >= fNew)
                                 {
                                     openList.Add((fNew, new Pair(newX, newY)));
 
@@ -153,7 +177,7 @@ namespace Apa_Project
         }
         public static bool IsUnBlocked(int[,] grid, int row, int col)
         {
-            return grid[row, col] == 0;
+            return grid[row, col] == 1;
         }
         public static bool IsDestination(int row, int col, Pair dest)
         {
@@ -162,6 +186,7 @@ namespace Apa_Project
         public static double CalculateHValue(int row, int col, Pair dest)
         {
             return Math.Sqrt(Math.Pow(row - dest.first, 2) + Math.Pow(col - dest.second, 2));
+            //return Math.Abs(row - dest.first) + Math.Abs(col - dest.second);
         }
         public static void TracePath(Cell[,] cellDetails, Pair dest)
         {
@@ -188,7 +213,7 @@ namespace Apa_Project
             while (Path.Count > 0)
             {
                 Pair p = Path.Peek();
-                Final.Add(new FinPair(p.first, p.second));
+                Final.Add(new Pair(p.first, p.second));
                 Path.Pop();
                 Console.Write(" -> ({0},{1}) ", p.first, p.second);
             }
