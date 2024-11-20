@@ -28,9 +28,10 @@ namespace Apa_Project
         List <Pair> checkpoints = new List <Pair> ();
         List<BFSPoint> points;
         List<double> stopwatches = new List <double> ();
+        List<int> distances = new List <int> ();
         PrimsGenerator primsGenerator;
         int setcp = 0;
-        int reset = 0;
+        int needtoreset = 0;
         public Form1()
         {
             InitializeComponent();
@@ -149,6 +150,7 @@ namespace Apa_Project
             buttons[Start.first, Start.second].BackColor = Color.Green;
             buttons[Finish.first, Finish.second].BackColor = Color.Red;
             MessageBox.Show($"Visited cells: {AStVisited.Count}, Time: {Aststopwatch.Elapsed.TotalMilliseconds} ms, Distance: {AStdistance}");
+            needtoreset = 1;
         }
 
         private async Task ShowPathBFS()
@@ -187,6 +189,7 @@ namespace Apa_Project
             buttons[Start.first, Start.second].BackColor = Color.Green;
             buttons[Finish.first, Finish.second].BackColor = Color.Red;
             MessageBox.Show($"Visited cells: {BFSVisited.Count}, Time: {BFSstopwatch.Elapsed.TotalMilliseconds} ms, Time: {BFSstopwatch.Elapsed.Milliseconds} ms, Distance: {l}");
+            needtoreset = 1;
         }
 
         private async Task ShowPathDij()
@@ -223,11 +226,14 @@ namespace Apa_Project
             buttons[Start.first, Start.second].BackColor = Color.Green;
             buttons[Finish.first, Finish.second].BackColor = Color.Red;
             MessageBox.Show($"Visited cells: {DVisited.Count}, Length: {l}, Time: {Dstopwatch.Elapsed.TotalMilliseconds} ms");
+            needtoreset = 1;
         }
 
         private async Task RunApp()
         {
             setcp = 1;
+            stopwatches.Clear();
+            distances.Clear();
             BFSPoint source = new BFSPoint(1, 0);
             BFSPoint destination = new BFSPoint(rows - 2, columns - 1);
             Pair dest = new Pair(rows - 2, columns - 1);
@@ -242,6 +248,7 @@ namespace Apa_Project
                 int l = BFSearch(primsGenerator.maze, source, destination);
                 double time = BFSstopwatch.Elapsed.TotalMilliseconds;
                 stopwatches.Add(time);
+                distances.Add(l);
 
                 source.x = destination.x;
                 source.y = destination.y;
@@ -271,7 +278,26 @@ namespace Apa_Project
                 }
                 //MessageBox.Show($"Visited cells: {BFSVisited.Count}, Time: {BFSstopwatch.Elapsed.TotalMilliseconds} ms, Distance: {l}");
             }
-            MessageBox.Show($"The path has been found");
+            string message = "Final result: \n";
+            double totaltime = 0;
+            int totaldistance = 0;
+            for (int i = 0; i < distances.Count; i++)
+            {
+                totaltime += stopwatches[i];
+                totaldistance += distances[i];
+                if (i == 0)
+                {
+                    message += $"S -> 1: Time: {stopwatches[i]} ms, Distance: {distances[i]}{Environment.NewLine}";
+                }
+                else if (i > 0 && i < distances.Count - 1)
+                {
+                    message += $"{i} -> {i + 1}: Time: {stopwatches[i]} ms, Distance: {distances[i]}{Environment.NewLine}";
+                }
+                else message += $"{i} -> F: Time: {stopwatches[i]} ms, Distance: {distances[i]}{Environment.NewLine}";
+            }
+            message += $"Total time: {totaltime} ms{Environment.NewLine}";
+            message += $"Total distance: {totaldistance}{Environment.NewLine}";
+            MessageBox.Show(message, "", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
@@ -524,6 +550,7 @@ namespace Apa_Project
 
         private void clearMaze()
         {
+            needtoreset = 0;
             for (int i = 0; i < rows; i++)
             {
                 for (int j = 0; j < columns; j++)
@@ -576,32 +603,40 @@ namespace Apa_Project
 
         private void button11_Click(object sender, EventArgs e)
         {
-            button1.Visible = true;
-            button2.Visible = true;
-            button3.Visible = true;
-            button9.Visible = true;
-            textBox1.Visible = true;
-            textBox2.Visible = true;
-            label3.Text = "Enter the maze dimensions";
-            label4.Visible = true;
-            label5.Visible = true;
-            button10.Visible = true;
+            if (needtoreset == 0)
+            {
+                button1.Visible = true;
+                button2.Visible = true;
+                button3.Visible = true;
+                button9.Visible = true;
+                textBox1.Visible = true;
+                textBox2.Visible = true;
+                label3.Text = "Enter the maze dimensions";
+                label4.Visible = true;
+                label5.Visible = true;
+                button10.Visible = true;
 
-            button4.Visible = false;
-            button5.Visible = false;
-            button6.Visible = false;
-            button7.Visible = false;
-            button8.Visible = false;
-            button11.Visible = false;
-            button12.Visible = false;
-            buttons[Start.first, Start.second].BackColor = Color.White;
-            buttons[1, 0].BackColor = Color.Green;
-            Start.first = 1;
-            Start.second = 0;
-            buttons[Finish.first, Finish.second].BackColor = Color.White;
-            Finish.first = rows - 2;
-            Finish.second = columns - 1;
-            buttons[rows - 2, columns - 1].BackColor = Color.Green;
+                button4.Visible = false;
+                button5.Visible = false;
+                button6.Visible = false;
+                button7.Visible = false;
+                button8.Visible = false;
+                button11.Visible = false;
+                button12.Visible = false;
+                buttons[Start.first, Start.second].BackColor = Color.White;
+                buttons[Start.first, Start.second].Text = "";
+                buttons[1, 0].BackColor = Color.Green;
+                buttons[1, 0].Text = "S";
+                Start.first = 1;
+                Start.second = 0;
+                buttons[Finish.first, Finish.second].BackColor = Color.White;
+                buttons[Finish.first, Finish.second].Text = "";
+                Finish.first = rows - 2;
+                Finish.second = columns - 1;
+                buttons[rows - 2, columns - 1].BackColor = Color.Green;
+                buttons[rows - 2, columns - 1].Text = "F";
+            }
+            else MessageBox.Show("Reset the maze before going back", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         private void button12_Click(object sender, EventArgs e)
