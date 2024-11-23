@@ -167,7 +167,7 @@ namespace Apa_Project
             this.button8.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.button8.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.button8.ForeColor = System.Drawing.Color.White;
-            this.button8.Location = new System.Drawing.Point(62, 928);
+            this.button8.Location = new System.Drawing.Point(294, 838);
             this.button8.Name = "button8";
             this.button8.Padding = new System.Windows.Forms.Padding(2);
             this.button8.Size = new System.Drawing.Size(150, 57);

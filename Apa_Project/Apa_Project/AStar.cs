@@ -36,7 +36,7 @@ namespace Apa_Project
         }
         public static void A_Star(int[,] grid, Pair src, Pair dest)
         {
-            //Aststopwatch.Reset();
+            Aststopwatch.Reset();
             Aststopwatch.Start();
             Final.Clear();
             AStVisited.Clear(); 

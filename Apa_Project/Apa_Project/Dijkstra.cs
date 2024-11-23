@@ -41,6 +41,7 @@ namespace Apa_Project
         public static Stopwatch Dstopwatch = new Stopwatch();
         public static int DijPath(int[,] grid, DijPair source, DijPair destination)
         {
+            Dstopwatch.Reset();
             Dstopwatch.Start(); // Start timing
             DPath.Clear();
             DVisited.Clear();

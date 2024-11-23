@@ -129,7 +129,7 @@ namespace Apa_Project
                     //buttons[prev_row, prev_col].BackColor = Color.White;
 
                 }
-                buttons[pair.first, pair.second].BackColor = Color.Brown;
+                buttons[pair.first, pair.second].BackColor = Color.OrangeRed;
                 await Task.Delay(1);
                 prev_col = pair.second;
                 prev_row = pair.first;
@@ -142,7 +142,7 @@ namespace Apa_Project
                     //buttons[prev_row, prev_col].BackColor = Color.White;
 
                 }
-                buttons[pair.first, pair.second].BackColor = Color.Aqua;
+                buttons[pair.first, pair.second].BackColor = Color.Blue;
                 await Task.Delay(20);
                 prev_col = pair.second;
                 prev_row = pair.second; 
@@ -188,7 +188,7 @@ namespace Apa_Project
             }
             buttons[Start.first, Start.second].BackColor = Color.Green;
             buttons[Finish.first, Finish.second].BackColor = Color.Red;
-            MessageBox.Show($"Visited cells: {BFSVisited.Count}, Time: {BFSstopwatch.Elapsed.TotalMilliseconds} ms, Time: {BFSstopwatch.Elapsed.Milliseconds} ms, Distance: {l}");
+            MessageBox.Show($"Visited cells: {BFSVisited.Count}, Time: {BFSstopwatch.Elapsed.TotalMilliseconds} ms, Distance: {l}");
             needtoreset = 1;
         }
 
@@ -327,6 +327,7 @@ namespace Apa_Project
         private async void button1_Click(object sender, EventArgs e)
         {
             setcp = 1;
+            int possibletogenerate = 0;
             if (int.TryParse(textBox1.Text, out int height) && int.TryParse(textBox2.Text, out int width))
             {
                 if (height < 10 || height > 50 || width < 10 || width > 75)
@@ -352,14 +353,15 @@ namespace Apa_Project
                     else buttonSize = 15;
                     Start = new Pair(1, 0);
                     Finish = new Pair(rows - 2, columns - 1);
+                    possibletogenerate = 1;
                     //MessageBox.Show("The dimensions have been set successfully!");
                 }
             }
-            else if (rows == 0 || columns == 0)
-            {
-                MessageBox.Show("Error: Enter the maze dimensions.");
-                return;
-            }
+            //else if (rows == 0 || columns == 0)
+            //{
+            //    MessageBox.Show("Error: Enter the maze dimensions.");
+            //    return;
+            //}
             else
             {
                 MessageBox.Show("Enter a valid number!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -370,16 +372,19 @@ namespace Apa_Project
             //    MessageBox.Show("Error: Enter the maze dimensions.");
             //    return;
             //}
-            await Task.Run(() => InitializeDynamicButtons());
-            await InitializeButtonsOnUI();
-            button1.Text = "Generate a new maze";
-            button3.Enabled = true;
-            button9.Enabled = true;
-            button10.Enabled = true;
-            buttons[1, 0].BackColor = Color.Green;
-            buttons[1, 0].Text = "S";
-            buttons[rows - 2, columns - 1].BackColor = Color.Green;
-            buttons[rows - 2, columns - 1].Text = "F";
+            if (possibletogenerate == 1)
+            {
+                await Task.Run(() => InitializeDynamicButtons());
+                await InitializeButtonsOnUI();
+                button1.Text = "Generate a new maze";
+                button3.Enabled = true;
+                button9.Enabled = true;
+                button10.Enabled = true;
+                buttons[1, 0].BackColor = Color.Green;
+                buttons[1, 0].Text = "S";
+                buttons[rows - 2, columns - 1].BackColor = Color.Green;
+                buttons[rows - 2, columns - 1].Text = "F";
+            }
             //button1.Hide();
             //button3.Hide();
             //label3.Hide();
@@ -636,7 +641,7 @@ namespace Apa_Project
                 buttons[rows - 2, columns - 1].BackColor = Color.Green;
                 buttons[rows - 2, columns - 1].Text = "F";
             }
-            else MessageBox.Show("Reset the maze before going back", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            else MessageBox.Show("Reset the maze before going to the main menu.", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
 
         private void button12_Click(object sender, EventArgs e)
