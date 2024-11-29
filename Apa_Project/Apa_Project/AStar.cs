@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace Apa_Project
 {
@@ -24,10 +25,6 @@ namespace Apa_Project
         public static List<Pair> AStVisited = new List<Pair>();
         public static Stopwatch Aststopwatch = new Stopwatch();
         public static double AStdistance; 
-
-
-        //static int[] rowNum = { -1, 0, 0, 1 };
-        //static int[] colNum = { 0, -1, 1, 0 };
         public struct Cell
         {
             public int parent_i, parent_j;
@@ -45,19 +42,19 @@ namespace Apa_Project
 
             if (!IsValid(src.first, src.second, ROW, COL) || !IsValid(dest.first, dest.second, ROW, COL))
             {
-                Console.WriteLine("Source or destination is invalid");
+                MessageBox.Show("Source or destination is invalid");
                 return;
             }
 
             if (!IsUnBlocked(grid, src.first, src.second) || !IsUnBlocked(grid, dest.first, dest.second))
             {
-                Console.WriteLine("Source or the destination is blocked");
+                MessageBox.Show("Source or the destination is blocked");
                 return;
             }
 
             if (src.first == dest.first && src.second == dest.second)
             {
-                Console.WriteLine("We are already at the destination");
+                MessageBox.Show("We are already at the destination");
                 return;
             }
 
@@ -83,19 +80,6 @@ namespace Apa_Project
             cellDetails[x, y].h = 0.0;
             cellDetails[x, y].parent_i = x;
             cellDetails[x, y].parent_j = y;
-
-            //SortedSet<(double, Pair)> openList = new SortedSet<(double, Pair)>(
-            //    Comparer<(double, Pair)>.Create((a, b) =>
-            //    {
-            //        int result = a.Item1.CompareTo(b.Item1);
-            //        if (result == 0)
-            //        {
-            //            result = a.Item2.first.CompareTo(b.Item2.first);
-            //            if (result == 0)
-            //                result = a.Item2.second.CompareTo(b.Item2.second);
-            //        }
-            //        return result;
-            //    }));
 
             SortedSet<(double, Pair)> openList = new SortedSet<(double, Pair)>(Comparer<(double, Pair)>.Create((a, b) => a.Item1.CompareTo(b.Item1)));
 
@@ -123,11 +107,6 @@ namespace Apa_Project
                         if (i == 0 && j == 0)
                             continue;
 
-                        //if (Math.Abs(i) == Math.Abs(j))
-                        //    continue;
-
-                        //int newX = x + rowNum[i];
-                        //int newY = y + colNum[i];
                         int newX = x + i;
                         int newY = y + j;
 
@@ -168,7 +147,7 @@ namespace Apa_Project
             }
 
             if (!foundDest)
-                Console.WriteLine("Failed to find the Destination Cell");
+                AStdistance = -1;
         }
 
         public static bool IsValid(int row, int col, int ROW, int COL)
@@ -186,11 +165,9 @@ namespace Apa_Project
         public static double CalculateHValue(int row, int col, Pair dest)
         {
             return Math.Sqrt(Math.Pow(row - dest.first, 2) + Math.Pow(col - dest.second, 2));
-            //return Math.Abs(row - dest.first) + Math.Abs(col - dest.second);
         }
         public static void TracePath(Cell[,] cellDetails, Pair dest)
         {
-            Console.WriteLine("\nThe Path is ");
             int ROW = cellDetails.GetLength(0);
             int COL = cellDetails.GetLength(1);
 
@@ -215,7 +192,6 @@ namespace Apa_Project
                 Pair p = Path.Peek();
                 Final.Add(new Pair(p.first, p.second));
                 Path.Pop();
-                Console.Write(" -> ({0},{1}) ", p.first, p.second);
             }
         }
     }

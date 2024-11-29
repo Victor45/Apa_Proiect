@@ -119,7 +119,7 @@ namespace Apa_Project
             this.button11.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.button11.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.button11.ForeColor = System.Drawing.Color.White;
-            this.button11.Location = new System.Drawing.Point(62, 748);
+            this.button11.Location = new System.Drawing.Point(62, 838);
             this.button11.Name = "button11";
             this.button11.Padding = new System.Windows.Forms.Padding(2);
             this.button11.Size = new System.Drawing.Size(382, 57);
@@ -167,7 +167,7 @@ namespace Apa_Project
             this.button8.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.button8.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.button8.ForeColor = System.Drawing.Color.White;
-            this.button8.Location = new System.Drawing.Point(294, 838);
+            this.button8.Location = new System.Drawing.Point(294, 748);
             this.button8.Name = "button8";
             this.button8.Padding = new System.Windows.Forms.Padding(2);
             this.button8.Size = new System.Drawing.Size(150, 57);
@@ -183,7 +183,7 @@ namespace Apa_Project
             this.button7.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.button7.Font = new System.Drawing.Font("Microsoft Sans Serif", 18F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(204)));
             this.button7.ForeColor = System.Drawing.Color.White;
-            this.button7.Location = new System.Drawing.Point(62, 838);
+            this.button7.Location = new System.Drawing.Point(62, 748);
             this.button7.Name = "button7";
             this.button7.Padding = new System.Windows.Forms.Padding(2);
             this.button7.Size = new System.Drawing.Size(150, 57);
@@ -300,7 +300,7 @@ namespace Apa_Project
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(220, 32);
             this.label5.TabIndex = 6;
-            this.label5.Text = "Width [10 - 75]:";
+            this.label5.Text = "Width [10 - 100]:";
             this.label5.Click += new System.EventHandler(this.label5_Click);
             // 
             // label4
@@ -313,7 +313,7 @@ namespace Apa_Project
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(232, 32);
             this.label4.TabIndex = 5;
-            this.label4.Text = "Height [10 - 50]:";
+            this.label4.Text = "Height [10 - 75]:";
             this.label4.Click += new System.EventHandler(this.label4_Click);
             // 
             // label3

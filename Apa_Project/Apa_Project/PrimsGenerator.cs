@@ -56,10 +56,8 @@ namespace Apa_Project
 
         public void GenerateMaze()
         {
-            //int rest_i = rows % 2 == 0 ? 1 : 0;
-            //int rest_j = cols % 2 == 0 ? 1 : 0;
-            int i = 0;
-            int j = 0;
+            int i = random.Next(1, rows - 1);
+            int j = random.Next(1, cols - 1);
             if (rows % 2 == 1)
             {
                 do
@@ -67,35 +65,13 @@ namespace Apa_Project
                     i = random.Next(1, rows - 1);
                 } while (i % 2 == 0);
             }
-            else
-            {
-                do
-                {
-                    i = random.Next(1, rows - 1);
-                } while (i % 2 == 1);
-            }
             if (cols % 2 == 1)
             {
                 do
                 {
-                    j = random.Next(1, rows - 1);
+                    j = random.Next(1, cols - 1);
                 } while (j % 2 == 0);
             }
-            else
-            {
-                do
-                {
-                    j = random.Next(1, rows - 1);
-                } while (j % 2 == 1);
-            }
-            //do
-            //{
-            //    j = random.Next(1, cols - 1);
-            //} while (j % 2 == rest_i);
-            //do
-            //{
-            //    i = random.Next(1, rows - 1);
-            //} while (i % 2 == rest_j);
 
             Cell randomCell = new Cell(i, j);
             SetCellAsPassage(randomCell);
@@ -110,14 +86,11 @@ namespace Apa_Project
 
             }
             RemoveWall();
-            //PrintMaze();
-
         }
         public void SetCellAsPassage(Cell cell)
         {
             if (cell.i == 0 || cell.i == rows - 1) return;
             if (cell.j == 0 || cell.j == cols - 1) return;
-            //maze[cell.i, cell.j] = true;
             maze[cell.i, cell.j] = 1;
         }
         public void FindAndSaveCellFrontiers(Cell cell)
@@ -125,7 +98,7 @@ namespace Apa_Project
             if (cell.i == 0 || cell.i == rows - 1) return;
             if (cell.j == 0 || cell.j == cols - 1) return;
             // top frontier
-            if (cell.i - 2 >= 0 && maze[cell.i - 2, cell.j] == 0) //maze[cell.i - 2, cell.j] == false
+            if (cell.i - 2 >= 0 && maze[cell.i - 2, cell.j] == 0) 
             {
                 Cell frontier = new Cell(cell.i - 2, cell.j);
                 if (!frontiers.Contains(frontier))
@@ -134,7 +107,7 @@ namespace Apa_Project
                 }
             }
             // right frontier
-            if (cell.j + 2 < cols && maze[cell.i, cell.j + 2] == 0) //maze[cell.i, cell.j + 2] == false
+            if (cell.j + 2 < cols && maze[cell.i, cell.j + 2] == 0) 
             {
                 Cell frontier = new Cell(cell.i, cell.j + 2);
                 if (!frontiers.Contains(frontier))
@@ -143,7 +116,7 @@ namespace Apa_Project
                 }
             }
             // bottom frontier
-            if (cell.i + 2 < rows && maze[cell.i + 2, cell.j] == 0) //maze[cell.i + 2, cell.j] == false
+            if (cell.i + 2 < rows && maze[cell.i + 2, cell.j] == 0) 
             {
                 Cell frontier = new Cell(cell.i + 2, cell.j);
                 if (!frontiers.Contains(frontier))
@@ -152,7 +125,7 @@ namespace Apa_Project
                 }
             }
             // left frontier
-            if (cell.j - 2 >= 0 && maze[cell.i, cell.j - 2] == 0) //maze[cell.i, cell.j - 2] == false
+            if (cell.j - 2 >= 0 && maze[cell.i, cell.j - 2] == 0) 
             {
                 Cell frontier = new Cell(cell.i, cell.j - 2);
                 if (!frontiers.Contains(frontier))
@@ -163,44 +136,43 @@ namespace Apa_Project
         }
         public void MakePassge(Cell cell)
         {
-            // search which first frontier of this cell is already a passage and make the cell between them also
             List<int> visited = new List<int>();
             int frontier = random.Next(1, 5);
             visited.Add(frontier);
             while (true)
             {
                 // top frontier
-                if (frontier == 1 && 0 <= cell.i - 2 && maze[cell.i - 2, cell.j] == 1) //maze[cell.i - 2, cell.j] == true
+                if (frontier == 1 && 0 <= cell.i - 2 && maze[cell.i - 2, cell.j] == 1) 
                 {
-                    maze[cell.i - 1, cell.j] = 1; //maze[cell.i - 1, cell.j] = true
-                    //Cell frontier = new Cell(cell.i , cell.j);
+                    maze[cell.i - 1, cell.j] = 1; 
+                    
                     frontiers.Remove(cell);
 
                     return;
                 }
                 // right frontier
-                if (frontier == 2 && cell.j + 2 < cols && maze[cell.i, cell.j + 2] == 1) //maze[cell.i, cell.j + 2] == true
+                if (frontier == 2 && cell.j + 2 < cols && maze[cell.i, cell.j + 2] == 1) 
                 {
-                    maze[cell.i, cell.j + 1] = 1; //maze[cell.i, cell.j + 1] = true
-                    //Cell frontier = new Cell(cell.i, cell.j + 2);
+                    maze[cell.i, cell.j + 1] = 1; 
+                    
                     frontiers.Remove(cell);
 
                     return;
                 }
                 // bottom frontier
-                if (frontier == 3 && cell.i + 2 < rows && maze[cell.i + 2, cell.j] == 1) //maze[cell.i + 2, cell.j] == true
+                if (frontier == 3 && cell.i + 2 < rows && maze[cell.i + 2, cell.j] == 1) 
                 {
-                    maze[cell.i + 1, cell.j] = 1; //maze[cell.i + 1, cell.j] = true;
-                    //Cell frontier = new Cell(cell.i + 2, cell.j);
+                    maze[cell.i + 1, cell.j] = 1; 
+                    
                     frontiers.Remove(cell);
 
                     return;
                 }
                 // left frontier
-                if (frontier == 4 && 0 <= cell.j - 2 && maze[cell.i, cell.j - 2] == 1) //maze[cell.i, cell.j - 2] == true
+                if (frontier == 4 && 0 <= cell.j - 2 && maze[cell.i, cell.j - 2] == 1) 
                 {
-                    maze[cell.i, cell.j - 1] = 1; //maze[cell.i, cell.j - 1] = true
-                    //Cell frontier = new Cell(cell.i, cell.j - 2);
+                    maze[cell.i, cell.j - 1] = 1; 
+                    
                     frontiers.Remove(cell);
 
                     return;
@@ -219,7 +191,7 @@ namespace Apa_Project
             {
                 for (int j = 0; j < cols; j++)
                 {
-                    if (maze[i, j] == 1) //true
+                    if (maze[i, j] == 1)
                     {
                         Console.Write(" ");
                     }
@@ -237,7 +209,7 @@ namespace Apa_Project
             {
                 for (int j = 1; j < cols - 1; j++)
                 {
-                    if (maze[i, j] == 0) //false
+                    if (maze[i, j] == 0) 
                     {
                         if (maze[i, j - 1] == 0 && maze[i, j + 1] == 0 && maze[i - 1, j] == 1 && maze[i + 1, j] == 1)
                         {
@@ -260,7 +232,7 @@ namespace Apa_Project
                 wallindex = random.Next(rwcount);
                 r = removableWalls[wallindex].i;
                 c = removableWalls[wallindex].j;
-                maze[r, c] = 1; //true
+                maze[r, c] = 1;
                 wallcount++;
                 rwcount--;
                 removableWalls.RemoveAt(wallindex);

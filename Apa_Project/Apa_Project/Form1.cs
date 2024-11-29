@@ -42,7 +42,7 @@ namespace Apa_Project
             primsGenerator.GenerateMaze();
         }
 
-        private async Task InitializeButtonsOnUI()
+        private async Task DrawMazeFromButtonsOnUI()
         {
             int count = 0;
 
@@ -52,20 +52,7 @@ namespace Apa_Project
 
                 this.tableLayoutPanel1.Invoke(new Action(() =>
                 {
-                    this.tableLayoutPanel1.Controls.Clear();
-                    this.tableLayoutPanel1.RowStyles.Clear();
-                    this.tableLayoutPanel1.ColumnStyles.Clear();
-
-                    this.tableLayoutPanel1.RowCount = rows;
-                    this.tableLayoutPanel1.ColumnCount = columns;
-
-                    this.tableLayoutPanel1.Size = new Size(columns * buttonSize, rows * buttonSize);
-
-                    this.tableLayoutPanel1.AutoSize = false;
-                    this.tableLayoutPanel1.AutoSizeMode = AutoSizeMode.GrowAndShrink;
-                    this.tableLayoutPanel1.Left = (this.panel2.Width - this.tableLayoutPanel1.Width) / 2;
-                    this.tableLayoutPanel1.Top = (this.ClientSize.Height - this.tableLayoutPanel1.Height) / 2;
-
+                    ResizeGrid();
                     for (int row = 0; row < rows; row++)
                     {
                         this.tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Absolute, buttonSize));
@@ -81,32 +68,16 @@ namespace Apa_Project
                 {
                     for (int col = 0; col < columns; col++)
                     {
-                        //bool isInFirstRow = row == 0;
-                        //bool isInLastRow = row == rows - 1;
-                        //bool isInFirstCol = col == 0;
-                        //bool isInLastCol = col == columns - 1;
-
                         buttons[row, col] = new Button
-                        //var button = new Button
                         {
                             BackColor = primsGenerator.maze[row, col] != 0 ? Color.White : Color.Black,
                             Dock = DockStyle.Fill,
                             FlatStyle = FlatStyle.Flat,
                             Margin = new Padding(0),
-                            Name = $"button_{row}_{col}",
+                            //Name = $"button_{row}_{col}",
                             //FlatAppearance = { BorderSize = 0 }
                         };
                         buttons[row, col].FlatAppearance.BorderSize = 0;
-
-                        //this.tableLayoutPanel1.Controls.Add(buttons[row, col], col, row);
-
-                        //buttons[row, col].Click += (sender, e) =>
-                        ////button.Click += (s, args) =>
-                        //{
-                        //    Button clickedButton = (Button)sender;
-                        //    clickedButton.BackColor = Color.Yellow;
-                        //    clickedButton.Text = (++count).ToString();
-                        //};
 
                         this.tableLayoutPanel1.Invoke(new Action(() => this.tableLayoutPanel1.Controls.Add(buttons[row, col], col, row)));
                     }
@@ -114,38 +85,37 @@ namespace Apa_Project
             });
         }
 
+        private void ResizeGrid()
+        {
+            this.tableLayoutPanel1.Controls.Clear();
+            this.tableLayoutPanel1.RowStyles.Clear();
+            this.tableLayoutPanel1.ColumnStyles.Clear();
+
+            this.tableLayoutPanel1.RowCount = rows;
+            this.tableLayoutPanel1.ColumnCount = columns;
+
+            this.tableLayoutPanel1.Size = new Size(columns * buttonSize, rows * buttonSize);
+
+            this.tableLayoutPanel1.AutoSize = false;
+            this.tableLayoutPanel1.AutoSizeMode = AutoSizeMode.GrowAndShrink;
+            this.tableLayoutPanel1.Left = (this.panel2.Width - this.tableLayoutPanel1.Width) / 2;
+            this.tableLayoutPanel1.Top = (this.ClientSize.Height - this.tableLayoutPanel1.Height) / 2;
+        }
+
         private async Task ShowPathAst()
         {
-            Pair source = new Pair(Start.first, Start.second);//(rows - 2, 1);
-            Pair destination = new Pair(Finish.first, Finish.second);//(1, columns - 2);
+            Pair source = new Pair(Start.first, Start.second);
+            Pair destination = new Pair(Finish.first, Finish.second);
             A_Star(primsGenerator.maze, source, destination);
-            int steps = 0;
-            int prev_row = -1;
-            int prev_col = -1;
             foreach (var pair in AStVisited)
             {
-                if (prev_col != -1 && prev_row != -1)
-                {
-                    //buttons[prev_row, prev_col].BackColor = Color.White;
-
-                }
                 buttons[pair.first, pair.second].BackColor = Color.OrangeRed;
                 await Task.Delay(1);
-                prev_col = pair.second;
-                prev_row = pair.first;
             }
             foreach (var pair in Final)
             {
-
-                if (prev_col != -1 && prev_row != -1)
-                {
-                    //buttons[prev_row, prev_col].BackColor = Color.White;
-
-                }
                 buttons[pair.first, pair.second].BackColor = Color.Blue;
-                await Task.Delay(20);
-                prev_col = pair.second;
-                prev_row = pair.second; 
+                await Task.Delay(20); 
             }
             buttons[Start.first, Start.second].BackColor = Color.Green;
             buttons[Finish.first, Finish.second].BackColor = Color.Red;
@@ -155,36 +125,19 @@ namespace Apa_Project
 
         private async Task ShowPathBFS()
         {
-            //BFSPoint source = new BFSPoint(rows - 2, columns - 1);
-            //BFSPoint destination = new BFSPoint(1, 0);
-            BFSPoint source = new BFSPoint(Start.first, Start.second);//(rows - 2, 1);
-            BFSPoint destination = new BFSPoint(Finish.first, Finish.second);//(1, columns - 2);
+            BFSPoint source = new BFSPoint(Start.first, Start.second);
+            BFSPoint destination = new BFSPoint(Finish.first, Finish.second);
             int l = BFSearch(primsGenerator.maze, source, destination);
-            int prev_row = -1;
-            int prev_col = -1;
+
             foreach (var pair in BFSVisited)
             {
-                if (prev_col != -1 && prev_row != -1)
-                {
-                    //buttons[prev_row, prev_col].BackColor = Color.White;
-
-                }
                 buttons[pair.x, pair.y].BackColor = Color.DarkOrange;
                 await Task.Delay(1);
-                prev_col = pair.y;
-                prev_row = pair.x;
             }
             foreach (var pair in BFSPath)
             {
-                if (prev_col != -1 && prev_row != -1)
-                {
-                    //buttons[prev_row, prev_col].BackColor = Color.White;
-
-                }
                 buttons[pair.x, pair.y].BackColor = Color.LightGreen;
                 await Task.Delay(20);
-                prev_col = pair.y;
-                prev_row = pair.x;
             }
             buttons[Start.first, Start.second].BackColor = Color.Green;
             buttons[Finish.first, Finish.second].BackColor = Color.Red;
@@ -197,31 +150,15 @@ namespace Apa_Project
             DijPair source = new DijPair(Start.first, Start.second);
             DijPair destination = new DijPair(Finish.first, Finish.second);
             int l = DijPath(primsGenerator.maze, source, destination);
-            int prev_row = -1;
-            int prev_col = -1;
             foreach (var pair in DVisited)
             {
-                if (prev_col != -1 && prev_row != -1)
-                {
-                    //buttons[prev_row, prev_col].BackColor = Color.White;
-
-                }
                 buttons[pair.Row, pair.Col].BackColor = Color.YellowGreen;
                 await Task.Delay(1);
-                prev_col = pair.Col;
-                prev_row = pair.Row;
             }
             foreach (var pair in DPath)
             {
-                if (prev_col != -1 && prev_row != -1)
-                {
-                    //buttons[prev_row, prev_col].BackColor = Color.White;
-
-                }
                 buttons[pair.Row, pair.Col].BackColor = Color.Yellow;
                 await Task.Delay(20);
-                prev_col = pair.Col;
-                prev_row = pair.Row;
             }
             buttons[Start.first, Start.second].BackColor = Color.Green;
             buttons[Finish.first, Finish.second].BackColor = Color.Red;
@@ -249,7 +186,6 @@ namespace Apa_Project
                 double time = BFSstopwatch.Elapsed.TotalMilliseconds;
                 stopwatches.Add(time);
                 distances.Add(l);
-
                 source.x = destination.x;
                 source.y = destination.y;
                 int prev_row = -1;
@@ -258,7 +194,6 @@ namespace Apa_Project
                 {
                     buttons[destination.x, destination.y].BackColor = Color.Yellow;
                 }
-                //foreach (var pair2 in BFSPath)
                 for (int i = 1; i < BFSPath.Count(); i++)
                 {
                     var pair2 = BFSPath[i];
@@ -267,7 +202,7 @@ namespace Apa_Project
                         buttons[prev_row, prev_col].BackColor = Color.White;
 
                     }
-                    buttons[pair2.x, pair2.y].BackColor = Color.Red;
+                    buttons[pair2.x, pair2.y].BackColor = Color.Blue;
                     await Task.Delay(50);
                     prev_col = pair2.y;
                     prev_row = pair2.x;
@@ -276,7 +211,6 @@ namespace Apa_Project
                 {
                     buttons[source.x, source.y].BackColor = Color.LightGreen;
                 }
-                //MessageBox.Show($"Visited cells: {BFSVisited.Count}, Time: {BFSstopwatch.Elapsed.TotalMilliseconds} ms, Distance: {l}");
             }
             string message = "Final result: \n";
             double totaltime = 0;
@@ -330,7 +264,7 @@ namespace Apa_Project
             int possibletogenerate = 0;
             if (int.TryParse(textBox1.Text, out int height) && int.TryParse(textBox2.Text, out int width))
             {
-                if (height < 10 || height > 50 || width < 10 || width > 75)
+                if (height < 10 || height > 75 || width < 10 || width > 100)
                 {
                     MessageBox.Show("The dimensions do not correspond to the limits!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
@@ -346,36 +280,29 @@ namespace Apa_Project
                     {
                         columns++;
                     }
-                    if (rows <= 35 || columns <= 51)
+                    if (rows <= 35 && columns <= 51)
                     {
                         buttonSize = 20;
                     }
-                    else buttonSize = 15;
+                    else if (rows <= 51 && columns <= 75)
+                    {
+                        buttonSize = 15;
+                    }
+                    else buttonSize = 10;
                     Start = new Pair(1, 0);
                     Finish = new Pair(rows - 2, columns - 1);
                     possibletogenerate = 1;
-                    //MessageBox.Show("The dimensions have been set successfully!");
                 }
             }
-            //else if (rows == 0 || columns == 0)
-            //{
-            //    MessageBox.Show("Error: Enter the maze dimensions.");
-            //    return;
-            //}
             else
             {
                 MessageBox.Show("Enter a valid number!", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            //if (rows == 0 || columns == 0)
-            //{
-            //    MessageBox.Show("Error: Enter the maze dimensions.");
-            //    return;
-            //}
             if (possibletogenerate == 1)
             {
                 await Task.Run(() => InitializeDynamicButtons());
-                await InitializeButtonsOnUI();
+                await DrawMazeFromButtonsOnUI();
                 button1.Text = "Generate a new maze";
                 button3.Enabled = true;
                 button9.Enabled = true;
@@ -385,11 +312,6 @@ namespace Apa_Project
                 buttons[rows - 2, columns - 1].BackColor = Color.Green;
                 buttons[rows - 2, columns - 1].Text = "F";
             }
-            //button1.Hide();
-            //button3.Hide();
-            //label3.Hide();
-            //label4.Hide();
-            //label5.Hide();
         }
 
         private void panel2_Paint_1(object sender, PaintEventArgs e)
@@ -436,7 +358,6 @@ namespace Apa_Project
                     int row = r;
                     int col = c;
                     buttons[row, col].Click += (send, eargs) =>
-                    //button.Click += (s, args) =>
                     {
                         if (primsGenerator.maze[row, col] == 1  && setcp == 0)
                         {
@@ -451,7 +372,6 @@ namespace Apa_Project
                             }
                             else
                             {
-                                MessageBox.Show("The maximum number of checkpoints has been reached.");
                                 return;
                             }
                         }
@@ -468,21 +388,18 @@ namespace Apa_Project
         private async void button4_Click(object sender, EventArgs e)
         {
             setcp = 1;
-            //clearMaze();
             await ShowPathAst();
         }
 
         private async void button5_Click(object sender, EventArgs e)
         {
             setcp = 1;
-            //clearMaze();
             await ShowPathBFS();
         }
 
         private async void button6_Click(object sender, EventArgs e)
         {
             setcp = 1;
-            //clearMaze();
             await ShowPathDij();
         }
 
@@ -497,7 +414,6 @@ namespace Apa_Project
                     int row = r;
                     int col = c;
                     buttons[row, col].Click += (send, eargs) =>
-                    //button.Click += (s, args) =>
                     {
                         if (pressed == 0)
                         {
@@ -515,7 +431,11 @@ namespace Apa_Project
                     };
                 }
             }
-            buttons[Start.first, Start.second].BackColor = Color.White;
+            if (primsGenerator.maze[Start.first, Start.second] == 1)
+            {
+                buttons[Start.first, Start.second].BackColor = Color.White;
+            }
+            else buttons[Start.first, Start.second].BackColor = Color.Black;
             buttons[Start.first, Start.second].Text = " ";
         }
 
@@ -531,7 +451,6 @@ namespace Apa_Project
                     int row = r;
                     int col = c;
                     buttons[row, col].Click += (send, eargs) =>
-                    //button.Click += (s, args) =>
                     {
                         if (pressed == 0)
                         {
@@ -549,7 +468,11 @@ namespace Apa_Project
                     };
                 }
             }
-            buttons[Finish.first, Finish.second].BackColor = Color.White;
+            if (primsGenerator.maze[Finish.first, Finish.second] == 1)
+            {
+                buttons[Finish.first, Finish.second].BackColor = Color.White;
+            }
+            else buttons[Finish.first, Finish.second].BackColor = Color.Black;
             buttons[Finish.first, Finish.second].Text = " ";
         }
 
@@ -579,7 +502,6 @@ namespace Apa_Project
         private async void button9_Click(object sender, EventArgs e)
         {
             setcp = 1;
-            //clearMaze();
             await RunApp();
         }
 
@@ -643,7 +565,6 @@ namespace Apa_Project
             }
             else MessageBox.Show("Reset the maze before going to the main menu.", "", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
-
         private void button12_Click(object sender, EventArgs e)
         {
             clearMaze();
